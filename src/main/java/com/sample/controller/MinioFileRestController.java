@@ -8,9 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-@RestController
+@RestController("/file")
 @RequiredArgsConstructor
-@RequestMapping(value = "/file/")
 public class MinioFileRestController {
     private final MinioFileService minioFileService;
 

@@ -1,4 +1,4 @@
-package com.doubled.doubledjavaminiotemplate;
+package com.sample;
 
 import com.sample.service.MinioBucketService;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -13,11 +13,11 @@ public class SpringMinioTemplateApplication {
         builder.headless(false);
         ConfigurableApplicationContext context = builder.run(args);
 
-        MinioBucketService minioBucketService = context.getBean(MinioBucketService.class);
-        minioBucketService.createBucket("default");
-        minioBucketService.setWebHookNotificationOfBucket("default");
+//        MinioBucketService minioBucketService = context.getBean(MinioBucketService.class);
+//        minioBucketService.createBucket("default");
+//        minioBucketService.setWebHookNotificationOfBucket("default");
     }
-
+}
 //    /**
 //     * Minio 서버 초기화 시 동작 시켜야 할 코드가 있다면 스프링 프레임워크에서 Bean을 이용한다.
 //     * @param args
@@ -29,4 +29,4 @@ public class SpringMinioTemplateApplication {
 //
 //        UserService userService = context.getBean(UserService.class);
 //    }
-}
+//}

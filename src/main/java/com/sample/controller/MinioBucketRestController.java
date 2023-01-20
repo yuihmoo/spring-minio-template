@@ -9,9 +9,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.LinkedHashMap;
 
-@RestController
+@RestController("/bucket")
 @RequiredArgsConstructor
-@RequestMapping(value = "/bucket/")
 public class MinioBucketRestController {
     private final MinioBucketService minioBucketService;
     private final MinioNotifyHandler minioNotifyHandler;
