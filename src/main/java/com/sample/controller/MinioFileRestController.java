@@ -19,19 +19,19 @@ public class MinioFileRestController {
     private final MinioFileService minioFileService;
 
     @PostMapping("/upload")
-    public ResponseEntity<?> uploadToMinio(@ModelAttribute FileRequest fileRequest) {
+    public ResponseEntity<?> uploadFileToMinio(@ModelAttribute FileRequest fileRequest) {
         minioFileService.uploadObject(fileRequest);
         return ResponseEntity.ok().body("업로드에 성공하였습니다.");
     }
 
     @PostMapping("/delete")
-    public ResponseEntity<?> deleteToMinio(@ModelAttribute FileRequest fileRequest) {
+    public ResponseEntity<?> deleteFileToMinio(@ModelAttribute FileRequest fileRequest) {
         minioFileService.deleteObject(fileRequest);
         return ResponseEntity.ok().body("삭제 하였습니다.");
     }
 
     @PostMapping(value = "/download")
-    public ResponseEntity<?> getFile(@ModelAttribute FileRequest fileRequest) {
+    public ResponseEntity<?> getFileFromMinio(@ModelAttribute FileRequest fileRequest) {
         String preSignedUrl = minioFileService.getPreSignedUrl(fileRequest, Method.GET);
         return ResponseEntity.status(HttpStatus.OK)
                 .body(BaseResponse.builder().code("200").message("").data(preSignedUrl).build());
