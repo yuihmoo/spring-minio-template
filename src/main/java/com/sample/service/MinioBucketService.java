@@ -152,4 +152,16 @@ public class MinioBucketService {
             throw new RuntimeException(e);
         }
     }
+
+    public void recordCreateLog(String bucketName, String objectName) {
+        StringBuilder stringBuilder = new StringBuilder();
+        logger.info(stringBuilder.append(bucketName)
+                .append(" ").append("내에").append(objectName).append("이(가) 성공적으로 생성 되었습니다.").toString());
+    }
+
+    public void recordDeleteLog(String bucketName, String objectName) {
+        StringBuilder stringBuilder = new StringBuilder();
+        logger.info(stringBuilder.append(bucketName)
+                .append(" ").append("내에").append(objectName).append("이(가) 성공적으로 삭제 되었습니다.").toString());
+    }
 }

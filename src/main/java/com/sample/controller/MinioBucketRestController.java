@@ -23,7 +23,7 @@ public class MinioBucketRestController {
     @PostMapping("/create")
     public ResponseEntity<Object> registerDomain(@RequestParam("domain_name") String domainName) {
         minioBucketService.createBucket(domainName);
-        return ResponseEntity.ok().body(HttpStatus.OK);
+        return ResponseEntity.ok().body("버켓 생성에 성공하였습니다.");
     }
 
     /**

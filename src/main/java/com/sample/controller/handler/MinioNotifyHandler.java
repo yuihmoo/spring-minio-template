@@ -1,5 +1,6 @@
 package com.sample.controller.handler;
 
+import com.sample.service.MinioBucketService;
 import io.minio.messages.EventType;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -9,6 +10,7 @@ import java.util.LinkedHashMap;
 @Component
 @RequiredArgsConstructor
 public class MinioNotifyHandler {
+    private final MinioBucketService minioBucketService;
 
     /**
      * File 상태 변경에 따라 Method Handling
@@ -22,13 +24,10 @@ public class MinioNotifyHandler {
         String objectName = mapValues[1];
 
         if(eventName.equals(EventType.OBJECT_CREATED_PUT.toString())) {
-            //do something
-            System.out.println("notify put " + bucketName +" = "+ objectName);
+            minioBucketService.recordCreateLog(bucketName, objectName);
         }
         else if (eventName.equals(EventType.OBJECT_REMOVED_DELETE.toString())) {
-            //do something
-            System.out.println("notify delete " + bucketName +" = " + objectName);
+            minioBucketService.recordDeleteLog(bucketName, objectName);
         }
-        //add eventType
     }
 }
