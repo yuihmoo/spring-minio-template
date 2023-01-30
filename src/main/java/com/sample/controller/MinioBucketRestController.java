@@ -25,6 +25,22 @@ public class MinioBucketRestController {
         minioBucketService.createBucket(domainName);
         return ResponseEntity.ok().body("버켓 생성에 성공하였습니다.");
     }
+    @DeleteMapping()
+    public ResponseEntity<Object> deleteBucket(@RequestParam("bucket_name") String bucketName) {
+        minioBucketService.deleteBucket(bucketName);
+        return ResponseEntity.ok().body("버켓 삭제에 성공하였습니다.");
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<Object> getBucketList() {
+        return ResponseEntity.ok().body(minioBucketService.getBucketList());
+    }
+
+    @PatchMapping("/encrypt")
+    public ResponseEntity<Object> setBucketEncrypt(@RequestParam("bucket_name") String bucketName) {
+        minioBucketService.setBucketEncryption(bucketName);
+        return ResponseEntity.ok().body("버켓 암호화 설정에 성공하였습니다.");
+    }
 
     /**
      * Minio Notification : 파일 상태 관리 알림 EndPoint
@@ -34,4 +50,5 @@ public class MinioBucketRestController {
     public void fileNotify(@RequestBody LinkedHashMap<String, Object> events) {
         minioNotifyHandler.handleByEventName(events);
     }
+
 }
