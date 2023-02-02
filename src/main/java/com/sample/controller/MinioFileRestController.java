@@ -10,6 +10,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/file")
 @RequiredArgsConstructor
@@ -39,5 +41,11 @@ public class MinioFileRestController {
         String preSignedUrl = minioFileService.getPreSignedUrl(fileRequest, Method.GET);
         BaseResponse baseResponse = new BaseResponse("200", "", preSignedUrl);
         return ResponseEntity.status(HttpStatus.OK).body(BaseResponse.builder().code("200").message("").data(baseResponse).build());
+    }
+
+    @GetMapping("/list")
+    public ResponseEntity<?> getFileListFromBucket(@RequestParam("bucket_name") String bucketName) {
+        List<FileResponse> fileResponses = minioFileService.getListObjects(bucketName);
+        return ResponseEntity.status(HttpStatus.OK).body(fileResponses);
     }
 }

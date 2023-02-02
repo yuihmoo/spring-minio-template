@@ -232,7 +232,7 @@ public class MinioFileService {
     }
 
     /**
-     * Minio Bucket List 조회 (Default 100)
+     * Minio Bucket 안에 Object List 조회 (Default 100)
      * @param bucketName : Minio Bucket Name
      * @return : 파일 객체 리스트
      */
