@@ -1,6 +1,7 @@
 package com.sample.controller;
 
 import com.sample.dto.request.FileRequest;
+import com.sample.dto.request.FileSearchRequest;
 import com.sample.dto.response.BaseResponse;
 import com.sample.dto.response.FileResponse;
 import com.sample.service.MinioFileService;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -44,8 +46,15 @@ public class MinioFileRestController {
     }
 
     @GetMapping("/list")
-    public ResponseEntity<?> getFileListFromBucket(@RequestParam("bucket_name") String bucketName) {
+    public ResponseEntity<?> getFileList(@RequestParam("bucket_name") String bucketName) {
         List<FileResponse> fileResponses = minioFileService.getListObjects(bucketName);
+        return ResponseEntity.status(HttpStatus.OK).body(fileResponses);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<?> searchFileList(@RequestBody FileSearchRequest fileSearchRequest) throws Exception {
+        ArrayList<FileResponse> fileResponses =
+                minioFileService.getObjectNamesByKeyword(fileSearchRequest.getUsername(), fileSearchRequest.getKeyword());
         return ResponseEntity.status(HttpStatus.OK).body(fileResponses);
     }
 }

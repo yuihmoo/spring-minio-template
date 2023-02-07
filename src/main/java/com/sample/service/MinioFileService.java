@@ -265,8 +265,8 @@ public class MinioFileService {
      * @return : 파일 객체 리스트
      * @throws Exception
      */
-    public ArrayList<FileRequest> getObjectNamesByKeyword(String username, String keyword) throws Exception {
-        ArrayList<FileRequest> fileDtoList = new ArrayList<>();
+    public ArrayList<FileResponse> getObjectNamesByKeyword(String username, String keyword) throws Exception {
+        ArrayList<FileResponse> fileDtoList = new ArrayList<>();
         Iterable<Result<Item>> result = minioClient.listObjects(ListObjectsArgs.builder()
                 .bucket(username)
                 .recursive(true)
@@ -275,7 +275,7 @@ public class MinioFileService {
                 .build());
 
         for (Result<Item> item : result) {
-            FileRequest fileDto = FileRequest.builder()
+            FileResponse fileDto = FileResponse.builder()
                     .bucketName(username)
                     .fileName(item.get().objectName())
                     .build();
