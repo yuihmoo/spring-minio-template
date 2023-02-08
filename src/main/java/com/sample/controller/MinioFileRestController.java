@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/file")
@@ -55,6 +56,13 @@ public class MinioFileRestController {
     public ResponseEntity<?> searchFileList(@RequestBody FileSearchRequest fileSearchRequest) throws Exception {
         ArrayList<FileResponse> fileResponses =
                 minioFileService.getObjectNamesByKeyword(fileSearchRequest.getUsername(), fileSearchRequest.getKeyword());
+        return ResponseEntity.status(HttpStatus.OK).body(fileResponses);
+    }
+
+    @GetMapping("/tags")
+    public ResponseEntity<?> getFileOfTags(@ModelAttribute FileRequest fileRequest) throws Exception {
+        Map<String, String> fileResponses =
+                minioFileService.getObjectTags(fileRequest);
         return ResponseEntity.status(HttpStatus.OK).body(fileResponses);
     }
 }
