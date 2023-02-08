@@ -69,6 +69,6 @@ public class MinioFileRestController {
     @PatchMapping("/tags")
     public ResponseEntity<?> setFileOfTags(@ModelAttribute FileRequest fileRequest) {
         minioFileService.setObjectTags(fileRequest);
-        return ResponseEntity.status(HttpStatus.OK).body();
+        return ResponseEntity.status(HttpStatus.OK).body("");
     }
 }
