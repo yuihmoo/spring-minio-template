@@ -60,9 +60,15 @@ public class MinioFileRestController {
     }
 
     @GetMapping("/tags")
-    public ResponseEntity<?> getFileOfTags(@ModelAttribute FileRequest fileRequest) throws Exception {
+    public ResponseEntity<?> getFileOfTags(@ModelAttribute FileRequest fileRequest) {
         Map<String, String> fileResponses =
                 minioFileService.getObjectTags(fileRequest);
         return ResponseEntity.status(HttpStatus.OK).body(fileResponses);
+    }
+
+    @PatchMapping("/tags")
+    public ResponseEntity<?> setFileOfTags(@ModelAttribute FileRequest fileRequest) {
+        minioFileService.setObjectTags(fileRequest);
+        return ResponseEntity.status(HttpStatus.OK).body();
     }
 }

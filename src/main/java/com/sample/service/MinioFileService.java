@@ -147,23 +147,22 @@ public class MinioFileService {
 
     /**
      * 특정 파일 태그 변경
-     * @param map : File Info
      * @param fileRequest : File instance
      */
-    public void setObjectTags(HashMap<String, String> map, FileRequest fileRequest) {
+    public void setObjectTags(FileRequest fileRequest) {
         try {
             minioClient.setObjectTags(
                     SetObjectTagsArgs.builder()
                             .bucket(fileRequest.getBucketName())
                             .object(fileRequest.getFileName())
-                            .tags(map)
+                            .tags(fileRequest.getFileInfo())
                             .build());
-            logger.info("MinioMapService setObjectTags() -> objectName : " + fileRequest.getFileName() + "tags : " + map);
+            logger.info("MinioMapService setObjectTags() -> objectName : " + fileRequest.getFileName() + "tags : " + fileRequest.getFileInfo());
         }
         catch (ServerException | InsufficientDataException | ErrorResponseException | IOException |
                  NoSuchAlgorithmException | InvalidKeyException | InvalidResponseException | XmlParserException |
                  InternalException e) {
-            logger.error("MinioMapService setObjectTags() -> objectName : " + fileRequest.getFileName() + "tags : " + map);
+            logger.error("MinioMapService setObjectTags() -> objectName : " + fileRequest.getFileName() + "tags : " + fileRequest.getFileInfo());
             throw new RuntimeException(e);
         }
     }
