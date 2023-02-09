@@ -23,7 +23,12 @@ public class MinioFileRestController {
 
     @PostMapping()
     public ResponseEntity<?> uploadFileToMinio(@ModelAttribute FileRequest fileRequest) {
-        minioFileService.uploadObject(fileRequest);
+        if(fileRequest.getFileInfo() == null) {
+            minioFileService.uploadObject(fileRequest);
+        }
+        else {
+            minioFileService.uploadObjectWithTags(fileRequest, fileRequest.getFileInfo());
+        }
         return ResponseEntity.ok().body("업로드에 성공하였습니다.");
     }
 
