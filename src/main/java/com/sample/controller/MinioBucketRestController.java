@@ -3,7 +3,6 @@ package com.sample.controller;
 import com.sample.controller.handler.MinioNotifyHandler;
 import com.sample.service.MinioBucketService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
