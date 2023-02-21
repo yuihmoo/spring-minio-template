@@ -30,7 +30,7 @@ services:
       - MINIO_ROOT_USER=root
       - MINIO_ROOT_PASSWORD=ZGRyb290MTIhIQ==
       - MINIO_NOTIFY_WEBHOOK_ENABLE=on
-      - MINIO_NOTIFY_WEBHOOK_ENDPOINT=http://host.docker.internal:8080/bucket/notifya
+      - MINIO_NOTIFY_WEBHOOK_ENDPOINT=spring-minio-template:8080/bucket/notify
     restart: always
     ports:
       - "9000:9000"
