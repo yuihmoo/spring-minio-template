@@ -48,6 +48,7 @@ public class MinioBucketRestController {
      */
     @PostMapping("/notify")
     public void fileNotify(@RequestBody LinkedHashMap<String, Object> events) {
+        System.out.println(events);
         minioNotifyHandler.handleByEventName(events);
     }
 
