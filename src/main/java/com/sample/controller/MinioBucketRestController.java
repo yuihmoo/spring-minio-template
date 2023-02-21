@@ -19,7 +19,7 @@ public class MinioBucketRestController {
      * Minio Bucket 생성
      * @param domainName : minio bucket name
      */
-    @PostMapping("/create")
+    @PostMapping()
     public ResponseEntity<Object> registerDomain(@RequestParam("domain_name") String domainName) {
         minioBucketService.createBucket(domainName);
         return ResponseEntity.ok().body("버켓 생성에 성공하였습니다.");
@@ -50,5 +50,4 @@ public class MinioBucketRestController {
         System.out.println(events);
         minioNotifyHandler.handleByEventName(events);
     }
-
 }
