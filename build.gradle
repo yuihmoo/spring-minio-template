@@ -32,6 +32,8 @@ dependencies {
     implementation 'com.fasterxml.jackson.core:jackson-core:2.13.3'
     implementation 'com.fasterxml.jackson.module:jackson-module-kotlin'
     implementation 'com.fasterxml.jackson.core:jackson-databind:2.13.2.1'
+
+    implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.19'
 }
 
 tasks.named('test') {

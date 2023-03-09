@@ -2,21 +2,25 @@ package com.sample.service;
 
 import com.sample.dto.request.FileRequest;
 import com.sample.dto.response.FileResponse;
+import com.sample.service.grapics.CustomMultipartFile;
 import io.minio.*;
 import io.minio.errors.*;
 import io.minio.http.Method;
 import io.minio.messages.Item;
 import io.minio.messages.Tags;
 import lombok.RequiredArgsConstructor;
+import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.TimeUnit;
@@ -26,6 +30,7 @@ import java.util.concurrent.TimeUnit;
 public class MinioFileService {
     private final Logger logger = LoggerFactory.getLogger(MinioFileService.class);
     private final MinioClient minioClient;
+    private final ImageService imageService;
 
     /**
      * Minio Object 존재 확인
@@ -282,5 +287,28 @@ public class MinioFileService {
             fileDtoList.add(fileDto);
         }
         return fileDtoList;
+    }
+
+    //TODO: 500 Error 수정 해야함(stream = null)
+    public void uploadThumbnail(FileRequest fileRequest, int targetWidth, int targetHeight) throws Exception {
+        BufferedImage image = ImageIO.read(fileRequest.getFile().getInputStream());
+        BufferedImage thumbnail = imageService.resizeImage(image, 300, 300);
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        ImageIO.write(thumbnail, "jpg", stream);
+        stream.flush();
+        MultipartFile multipartFile = convertBufferedImageToMultipartFile(thumbnail);
+        fileRequest.setFile(multipartFile);
+        uploadObject(fileRequest);
+    }
+
+    private MultipartFile convertBufferedImageToMultipartFile(BufferedImage image) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        try {
+            ImageIO.write(image, "jpeg", out);
+        } catch (IOException e) {
+            return null;
+        }
+        byte[] bytes = out.toByteArray();
+        return new CustomMultipartFile(bytes, "image", "image.jpeg", "jpeg", bytes.length);
     }
 }

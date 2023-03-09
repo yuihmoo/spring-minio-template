@@ -9,5 +9,4 @@ class SpringMinioTemplateApplicationTests {
     @Test
     void contextLoads() {
     }
-
 }

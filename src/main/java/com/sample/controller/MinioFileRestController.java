@@ -4,6 +4,7 @@ import com.sample.dto.request.FileRequest;
 import com.sample.dto.request.FileSearchRequest;
 import com.sample.dto.response.BaseResponse;
 import com.sample.dto.response.FileResponse;
+import com.sample.service.ImageService;
 import com.sample.service.MinioFileService;
 import io.minio.http.Method;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,7 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MinioFileRestController {
     private final MinioFileService minioFileService;
+    private final ImageService imageService;
 
     @PostMapping()
     public ResponseEntity<?> uploadFileToMinio(@ModelAttribute FileRequest fileRequest) {
@@ -29,26 +31,25 @@ public class MinioFileRestController {
         else {
             minioFileService.uploadObjectWithTags(fileRequest, fileRequest.getFileInfo());
         }
-        return ResponseEntity.ok().body("업로드에 성공하였습니다.");
+        return ResponseEntity.status(HttpStatus.OK).body(BaseResponse.builder().message("업로드에 성공하였습니다.").build());
     }
 
     @DeleteMapping()
     public ResponseEntity<?> deleteFileToMinio(@ModelAttribute FileRequest fileRequest) {
         minioFileService.deleteObject(fileRequest);
-        return ResponseEntity.ok().body("삭제 하였습니다.");
+        return ResponseEntity.ok().body(BaseResponse.builder().message("삭제에 성공하였습니다.").build());
     }
 
     @GetMapping()
     public ResponseEntity<?> getFileFromMinio(@ModelAttribute FileRequest fileRequest) {
         FileResponse fileResponse = minioFileService.getObject(fileRequest.getBucketName(), fileRequest.getFileName());
-        return ResponseEntity.status(HttpStatus.OK).body(BaseResponse.builder().code("200").message("").data(fileResponse).build());
+        return ResponseEntity.status(HttpStatus.OK).body(BaseResponse.builder().message("").data(fileResponse).build());
     }
 
     @GetMapping("/pre-signed")
     public ResponseEntity<?> getPreSignedToMinio(@ModelAttribute FileRequest fileRequest) {
         String preSignedUrl = minioFileService.getPreSignedUrl(fileRequest, Method.GET);
-        BaseResponse baseResponse = new BaseResponse("200", "", preSignedUrl);
-        return ResponseEntity.status(HttpStatus.OK).body(BaseResponse.builder().code("200").message("").data(baseResponse).build());
+        return ResponseEntity.status(HttpStatus.OK).body(BaseResponse.builder().code("200").message("").data(preSignedUrl).build());
     }
 
     @GetMapping("/list")
@@ -75,5 +76,11 @@ public class MinioFileRestController {
     public ResponseEntity<?> setFileOfTags(@ModelAttribute FileRequest fileRequest) {
         minioFileService.setObjectTags(fileRequest);
         return ResponseEntity.status(HttpStatus.OK).body("");
+    }
+
+    @PostMapping("/thumbnail")
+    public ResponseEntity<?> createThumbnail(@ModelAttribute FileRequest fileRequest) throws Exception {
+        minioFileService.uploadThumbnail(fileRequest, 300, 300);
+        return ResponseEntity.status(HttpStatus.OK).body(BaseResponse.builder().message("업로드에 성공하였습니다.").build());
     }
 }
